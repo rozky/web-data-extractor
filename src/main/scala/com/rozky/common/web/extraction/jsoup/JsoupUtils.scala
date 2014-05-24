@@ -2,6 +2,7 @@ package com.rozky.common.web.extraction.jsoup
 
 import org.jsoup.nodes.Element
 import org.apache.commons.lang3.StringUtils
+import org.jsoup.Jsoup
 
 /**
  * Helpers method for JSOUP html parser
@@ -30,5 +31,9 @@ object JsoupUtils {
             default
         }
 
+    }
+
+    def parseElement(el: String): Element = {
+        Jsoup.parse(el).body().child(0)
     }
 }
