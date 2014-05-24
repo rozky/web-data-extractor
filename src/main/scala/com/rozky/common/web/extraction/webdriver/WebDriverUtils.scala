@@ -14,6 +14,12 @@ object WebDriverUtils extends Eventually with SpanSugar {
         }
     }
 
+    def waitForElementWithId(id: String)(implicit driver: WebDriver) {
+        eventually(defaultTimeout, defaultInterval) {
+            driver.findElement(By.id(id))
+        }
+    }
+
     def waitForCssSelector(cssSelector: String)(implicit driver: WebDriver) {
         val selector = By.cssSelector(cssSelector)
         eventually(defaultTimeout, defaultInterval) {

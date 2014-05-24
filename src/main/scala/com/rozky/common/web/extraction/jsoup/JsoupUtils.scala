@@ -1,6 +1,7 @@
 package com.rozky.common.web.extraction.jsoup
 
 import org.jsoup.nodes.Element
+import org.apache.commons.lang3.StringUtils
 
 /**
  * Helpers method for JSOUP html parser
@@ -20,5 +21,14 @@ object JsoupUtils {
         } else {
             None
         }
+    }
+
+    def toInt(el: Element, default: Int = 0): Int = {
+        if (StringUtils.isNotBlank(el.ownText())) {
+            Integer.valueOf(el.ownText())
+        } else {
+            default
+        }
+
     }
 }
