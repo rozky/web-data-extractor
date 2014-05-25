@@ -27,5 +27,12 @@ class JsoupUtilsSpec extends WordSpec with Matchers {
             // when + then
             JsoupUtils.toInt(document) should be(12)
         }
+
+        "use default value if element text is only non-breaking space" in {
+            val document: Element = JsoupUtils.parseElement("<span>&nbsp;</span>")
+
+            // when + then
+            JsoupUtils.toInt(document, 10) should be(10)
+        }
     }
 }

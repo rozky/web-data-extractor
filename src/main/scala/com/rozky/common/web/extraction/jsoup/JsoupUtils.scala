@@ -25,15 +25,23 @@ object JsoupUtils {
     }
 
     def toInt(el: Element, default: Int = 0): Int = {
-        if (StringUtils.isNotBlank(el.ownText())) {
-            Integer.valueOf(el.ownText())
+        val digitsOnly = removeNonDigits(el.ownText())
+        if (StringUtils.isNotBlank(digitsOnly)) {
+            Integer.valueOf(digitsOnly)
         } else {
             default
         }
-
     }
 
     def parseElement(el: String): Element = {
         Jsoup.parse(el).body().child(0)
+    }
+
+    private def removeNonDigits(value: String): String = {
+        if (value != null) {
+            value.replaceAll("\\D", "")
+        } else {
+            ""
+        }
     }
 }
