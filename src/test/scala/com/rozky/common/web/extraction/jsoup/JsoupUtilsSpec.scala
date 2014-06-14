@@ -35,4 +35,20 @@ class JsoupUtilsSpec extends WordSpec with Matchers {
             JsoupUtils.toInt(document, 10) should be(10)
         }
     }
+
+    "toFloat" should {
+        "convert element content to float" in {
+            val document: Element = JsoupUtils.parseElement("<span> 1.07 </span>")
+
+            // when + then
+            JsoupUtils.toFloat(document) should be(1.07f)
+        }
+
+        "use default value if element content is not valid number" in {
+            val document: Element = JsoupUtils.parseElement("<span> - </span>")
+
+            // when + then
+            JsoupUtils.toFloat(document) should be(0)
+        }
+    }
 }

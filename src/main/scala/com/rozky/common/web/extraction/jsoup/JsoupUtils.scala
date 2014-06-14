@@ -3,6 +3,7 @@ package com.rozky.common.web.extraction.jsoup
 import org.jsoup.nodes.Element
 import org.apache.commons.lang3.StringUtils
 import org.jsoup.Jsoup
+import java.lang
 
 /**
  * Helpers method for JSOUP html parser
@@ -25,9 +26,18 @@ object JsoupUtils {
     }
 
     def toInt(el: Element, default: Int = 0): Int = {
-        val digitsOnly = removeNonDigits(el.ownText())
-        if (StringUtils.isNotBlank(digitsOnly)) {
-            Integer.valueOf(digitsOnly)
+        val number = removeNonDigits(el.ownText())
+        if (StringUtils.isNotBlank(number)) {
+            Integer.valueOf(number)
+        } else {
+            default
+        }
+    }
+
+    def toFloat(el: Element, default: Float = 0): Float = {
+        val number = removeNonDigits(el.text())
+        if (StringUtils.isNotBlank(number)) {
+            lang.Float.valueOf(number)
         } else {
             default
         }
@@ -39,7 +49,7 @@ object JsoupUtils {
 
     private def removeNonDigits(value: String): String = {
         if (value != null) {
-            value.replaceAll("\\D", "")
+            value.replaceAll("[^0-9.]", "")
         } else {
             ""
         }

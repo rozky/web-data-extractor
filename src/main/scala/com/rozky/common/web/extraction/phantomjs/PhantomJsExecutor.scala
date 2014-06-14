@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver
 object PhantomJsExecutor {
     val PHANTOM_JS_PATH = "/etc/rozky/phantomjs"
 
-    def execute[T](block: WebDriver => T): T = {
+    def execute[T](block: WebDriver => T)(implicit setting: PhantomJsSetting = PhantomJsSetting()): T = {
         var driver: PhantomJSDriver = null
         try {
             driver = createDriver
@@ -19,17 +19,16 @@ object PhantomJsExecutor {
         }
     }
 
-    private def createDriver: PhantomJSDriver = {
+    private def createDriver(implicit setting: PhantomJsSetting): PhantomJSDriver = {
         //        val loggingPreferences = new LoggingPreferences()
         //        loggingPreferences.enable("har", Level.ALL)
 
         val capabilities: DesiredCapabilities = DesiredCapabilities.phantomjs()
-        capabilities.setCapability(CapabilityType.TAKES_SCREENSHOT, false)
+        capabilities.setCapability(CapabilityType.TAKES_SCREENSHOT, setting.takeScreenShots)
         //        capabilities.setCapability(CapabilityType.LOGGING_PREFS, loggingPreferences)
-        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, Array("--load-images=no", "--disk-cache=true", "--webdriver-loglevel=DEBUG"))
-        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_PAGE_SETTINGS_PREFIX, Array("resourceTimeout=2000"))
-        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, PHANTOM_JS_PATH)
-        //            this.getClass.getClassLoader.getResource("phantomjs").getFile)
+        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, setting.cliArguments)
+        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_PAGE_SETTINGS_PREFIX, setting.pageSettings)
+        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, setting.executable)
         new PhantomJSDriver(capabilities)
     }
 }
